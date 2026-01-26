@@ -24,6 +24,15 @@ const Supabase = () => {
             <Link className='supabase-elementomenu' to='/supabase/listado'>
               Listado
             </Link>
+            <Link className='supabase-elementomenu' to='/supabase/creacion'>
+              Creación
+            </Link>
+            <Link className='supabase-elementomenu' to='/supabase/edicion'>
+              Edición
+            </Link>
+            <Link className='supabase-elementomenu' to='/supabase/eliminacion'>
+              Eliminación
+            </Link>
           </>
         )}
       </nav>

@@ -7,6 +7,7 @@ const SupabaseListado = () => {
   const { errorFeos } = useContext(contextoSupabase);
   return (
     <>
+      <h2>Listado de datos en Supabase.</h2>
       <p>
         Este contenido sólo debe estar disponible para usuarios registrados.
       </p>

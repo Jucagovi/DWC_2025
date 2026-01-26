@@ -20,6 +20,9 @@ import Supabase from "../pages/Supabase.jsx";
 import SupabaseInicio from "../pages/SupabaseInicio.jsx";
 import SupabaseLogin from "../pages/SupabaseLogin.jsx";
 import SupabaseListado from "../pages/SupabaseListado.jsx";
+import SupabaseCreacion from "../pages/SupabaseCreacion.jsx";
+import SupabaseEdicion from "../pages/SupabaseEdicion.jsx";
+import SupabaseEliminacion from "../pages/SupabaseEliminacion.jsx";
 
 /** Componenentes para crear rutas:
  *
@@ -72,6 +75,9 @@ const Rutas = () => {
           <Route path='inicio' element={<SupabaseInicio />} />
           <Route path='iniciarSesion' element={<SupabaseLogin />} />
           <Route path='listado' element={<SupabaseListado />} />
+          <Route path='creacion' element={<SupabaseCreacion />} />
+          <Route path='edicion' element={<SupabaseEdicion />} />
+          <Route path='eliminacion' element={<SupabaseEliminacion />} />
         </Route>
         <Route path='*' element={<Error />} />
       </Routes>

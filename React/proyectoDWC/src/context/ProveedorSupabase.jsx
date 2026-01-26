@@ -110,7 +110,82 @@ const ProveedorSupabase = ({ children }) => {
       setFeo(data[0]);
       setErrorFeos(ERROR_INICIAL);
     } catch (fallo) {
-      setSituacion(fallo.message);
+      setErrorFeos(fallo.message);
+    }
+  };
+
+  /**
+   * Función para insertar el estado "feo" en la
+   * base de datos de supabase.
+   */
+
+  const crearFeo = async (datos) => {
+    // Se intentan insertar los datos.
+    try {
+      const respuesta = await supabaseConexion.from("Feos").insert(datos);
+      console.log(respuesta);
+      // Se actualiza el estado feos para añadir los cambios, o no.
+      setFeos([...feos, datos]);
+    } catch (error) {
+      setErrorFeos(error.message);
+    }
+  };
+
+  // ¿Se debe manejar el estado del contexto (feo) o recibirlo como parámetro?
+
+  /**
+   * Función para editar la información de un feo.
+   */
+
+  const editarFeo = async (datos) => {
+    // Se intentan editar los datos.
+    try {
+      const { data, error } = await supabaseConexion
+        .from("Feos")
+        .update(datos)
+        .eq("id", datos.id);
+
+      if (error) throw error;
+
+      const feosCambiados = feos.map((feoAntiguo) => {
+        return feoAntiguo.id === datos.id ? datos : feoAntiguo;
+      });
+      setFeos(feosCambiados);
+    } catch (error) {
+      setErrorFeos(error.message);
+    }
+  };
+
+  // ¿Se le pasa en id dentro del objeto?
+  // ¿Se añade un segundo parámetro?
+
+  /**
+   * Función para borrar un registro de la
+   * base de datos.
+   */
+  const eliminarFeo = async (id) => {
+    // Se intenta borrar el elemento.
+    try {
+      const { data, error } = await supabaseConexion
+        .from("Feos")
+        .delete()
+        .eq("id", id);
+
+      /**
+       * Si todo ha ido bien, se actualiza el estado del contexto.
+       * Para ello se recorre el estado "feos" y se
+       * devuelven todos los objetos cuyo "id" sea diferente
+       * al que se ha eliminado.
+       */
+      const feosFiltrados = feos.filter((feo) => {
+        if (feo.id !== id) {
+          return feo;
+        }
+      });
+      // Se actualiza el estado.
+      setFeos(feosFiltrados);
+    } catch (error) {
+      setErrorFeos(error.message);
     }
   };
 
@@ -131,13 +206,16 @@ const ProveedorSupabase = ({ children }) => {
     filtrarFeos,
     ordenarFeos,
     obtenerFeo,
+    crearFeo,
+    eliminarFeo, 
+    editarFeo
   };
   return (
     <contextoSupabase.Provider value={datosProveer}>
       {children}
     </contextoSupabase.Provider>
   );
-};
+};;
 
 export default ProveedorSupabase;
 export { contextoSupabase };
