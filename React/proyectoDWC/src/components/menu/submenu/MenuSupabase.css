@@ -1,4 +1,4 @@
-.supabase-elementomenu{
+.menusupabase-elementomenu{
     display: inline;
     margin: 10px;
     padding: 10px;
@@ -7,12 +7,12 @@
     border-radius: 5px;
 }
 
-.supabase-elementomenu:hover {
+.menusupabase-elementomenu:hover {
     background-color: rgb(60, 60, 63);
     color:rgb(255, 255, 255);
     cursor: pointer;    
 }
 
-.supabase-navegacion{
+.menusupabase-navegacion{
     padding: 20px;
 }

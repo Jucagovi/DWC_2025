@@ -30,6 +30,13 @@ const ProveedorSupabase = ({ children }) => {
   const [feos, setFeos] = useState([]);
   const [feo, setFeo] = useState({});
   const [errorFeos, setErrorFeos] = useState(ERROR_INICIAL);
+  /**
+   * Estado especial para las consultas multitabla.
+   * Hay que tener en cuenta:
+   *  -> esto está fatal y no hay que hacerlo (un estado para cada cosa),
+   *  -> hay que cuestionarse si pertenece a otro contexto o no (unidad de datos).
+   */
+  const [multitabla, setMultitabla] = useState([]);
 
   /**
    * Función para obtener el listado de feos
@@ -190,7 +197,61 @@ const ProveedorSupabase = ({ children }) => {
   };
 
   /**
-   * ¿Se obtienen los productos al montar el constexto?
+   * Consulta multutabla en Supabase.
+   * A tener en cuenta:
+   *  -> se detectan automáticamente si las relaciones están bien puestas en la BBDD,
+   *  -> son sonsultas sobre relaciones 1 a N y N a M,
+   *  -> en las N a M importa el sentido de la consulta,
+   *  -> el funcionamimento es el mismo que las normales, sólo cambia
+   *      la estructura de la cláusula SELECT.
+   *
+   */
+
+  const obtenerCiudades = async (id) => {
+    try {
+      const { data, error } = await supabaseConexion
+        .from("countries")
+        .select("id_country, name, cities (id_city, name)");
+      if (error) throw error;
+      setMultitabla(data);
+      console.log(data);
+    } catch (error) {
+      setErrorFeos(error.message);
+    }
+  };
+
+  const obtenerDiscentesNotas = async (id) => {
+    try {
+      const { data, error } = await supabaseConexion
+        .from("discentes")
+        .select(
+          "nombre, apellidos, notas (nota, practicas (id_practica, titulo, descripcion))",
+        );
+      if (error) throw error;
+      setMultitabla(data);
+      console.log(data);
+    } catch (error) {
+      setErrorFeos(error.message);
+    }
+  };
+
+  const obtenerPracticasNotas = async (id) => {
+    try {
+      const { data, error } = await supabaseConexion
+        .from("practicas")
+        .select(
+          "titulo, descripcion, notas (nota, discentes (id_discente, nombre, apellidos))",
+        );
+      if (error) throw error;
+      setMultitabla(data);
+      console.log(data);
+    } catch (error) {
+      setErrorFeos(error.message);
+    }
+  };
+
+  /**
+   * ¿Se obtienen los productos al montar el contexto?
    */
   useEffect(() => {
     obtenerListado();
@@ -207,15 +268,19 @@ const ProveedorSupabase = ({ children }) => {
     ordenarFeos,
     obtenerFeo,
     crearFeo,
-    eliminarFeo, 
-    editarFeo
+    eliminarFeo,
+    editarFeo,
+    multitabla,
+    obtenerCiudades,
+    obtenerDiscentesNotas,
+    obtenerPracticasNotas,
   };
   return (
     <contextoSupabase.Provider value={datosProveer}>
       {children}
     </contextoSupabase.Provider>
   );
-};;
+};
 
 export default ProveedorSupabase;
 export { contextoSupabase };
