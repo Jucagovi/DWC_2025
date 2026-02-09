@@ -280,7 +280,7 @@ const ProveedorSupabase = ({ children }) => {
       {children}
     </contextoSupabase.Provider>
   );
-};
+};;
 
 export default ProveedorSupabase;
 export { contextoSupabase };

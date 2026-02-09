@@ -42,6 +42,9 @@ const MenuSupabase = () => {
             >
               Multitabla
             </Link>
+            <Link className='menusupabase-elementomenu' to='/supabase/roles'>
+              Roles
+            </Link>
           </>
         )}
       </nav>
